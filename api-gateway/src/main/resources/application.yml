@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: product-management-route
+          uri: lb://PRODUCT-MANAGEMENT
+          predicates:
+            - Path=/products/**
+        - id: cart-management-route
+          uri: lb://CART-MANAGEMENT
+          predicates:
+            - Path=/cart/**
+        - id: cart-management-route
+          uri: lb://CART-MANAGEMENT
+          predicates:
+            - Path=/purchases/**
+        - id: profile-management-route
+          uri: lb://PROFILE-MANAGEMENT
+          predicates:
+            - Path=/users/**
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+              allowedOrigins: "http://localhost:5173"
+              allowedMethods: "*"
+              allowedHeaders: "*"
+            
+#      globalcors:
+#        cors-configurations:
+#          '[/**]':
+#            allowed-origins: "http://localhost:5173" # Your frontend application's origin
+#            allowed-methods:
+#              - GET
+#              - POST
+#              - PUT
+#              - DELETE
+#              - PATCH
+#              - OPTIONS
+#            allowed-headers:
+#              - "*"
+#            allow-credentials: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+      
+server:
+  port: 9000
